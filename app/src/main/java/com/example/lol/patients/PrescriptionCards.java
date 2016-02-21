@@ -59,7 +59,7 @@ public class PrescriptionCards extends AppCompatActivity {
             String mapJson = (String) maps.get("jsonFile");
             String Diagnosis = getResources().getString(R.string.diagnosis);
 
-//            HashMap<String, Integer> medQuantityMap = (HashMap<String, Integer>) maps.get("medQuantity");
+//            HashMap<String, Integer> medQuantityMap = (HashMapJSON<String, Integer>) maps.get("medQuantity");
 
             Log.v(LOG_TAG, "Doc name - " + mapJson);
 //            Log.v(LOG_TAG, "Pres date - " + date.toString().substring(0, 10));
