@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/card_background_white"
+    android:elevation="4dp"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:background="@drawable/google_cards_background_top" >
+
+        <ImageView
+            android:id="@+id/list_item_google_cards_social_profile_image"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/reports"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="20dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="4dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical" >
+
+            <com.example.lol.patients.font.RobotoTextView
+                android:id="@+id/docnameCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="Dr. Ashok Nath"
+                android:textColor="@color/cpb_red_dark"
+                android:textSize="16sp"
+                app:typeface="robotoLight" />
+
+            <com.example.lol.patients.font.RobotoTextView
+                android:id="@+id/hospital"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fortis"
+                android:textColor="@color/material_grey_800"
+                android:textSize="12sp"
+                app:typeface="robotoLight" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!--<ImageView-->
+        <!--android:id="@+id/list_item_google_cards_social_image"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="20dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:contentDescription="@string/cd_main_image"-->
+        <!--android:scaleType="centerCrop" />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:gravity="left"
+        android:orientation="vertical"
+        android:background="@drawable/google_cards_background_bottom"  >
+
+        <com.example.lol.patients.font.RobotoTextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Jan 13, 2016"
+            android:textColor="@color/material_blue_grey_300"
+            android:textSize="14sp"
+            app:typeface="robotoRegular" />
+
+        <com.example.lol.patients.font.RobotoTextView
+            android:id="@+id/diagnosis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:gravity="left"
+            android:maxLines="4"
+            android:text="@string/diagnosis"
+            android:textColor="@color/material_blue_grey_700"
+            android:textSize="14sp"
+            app:typeface="robotoRegular" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/cpb_red_dark" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:elevation="4dp"
+            >
+
+            <com.example.lol.patients.font.RobotoTextView
+                android:id="@+id/medicineButton"
+                android:clickable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/transparent_button_selector"
+                android:padding="8dp"
+                android:text="MEDICINES"
+                android:textColor="@color/cpb_red_dark"
+                android:textSize="14sp"
+                app:typeface="robotoMedium" />
+
+            <com.example.lol.patients.font.RobotoTextView
+                android:id="@+id/orderButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/transparent_button_selector"
+                android:padding="8dp"
+                android:text="ORDER"
+                android:textColor="@color/cpb_red_dark"
+                android:textSize="14sp"
+                app:typeface="robotoMedium" />
+
+            <!-- Hidden JSON-->
+            <TextView
+                android:id="@+id/medListJson"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="fill_vertical"
+                android:text="rafdfs"
+                android:fontFamily="sans-serif-light"
+                android:minHeight="?android:attr/listPreferredItemHeight"
+                android:layout_alignParentRight="true"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

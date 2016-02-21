@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="transparent">#00FFFFFF</color>
+    <declare-styleable name="MaterialRippleLayout"><attr format="color" localization="suggested" name="rippleColor"/><attr format="dimension" localization="suggested" name="rippleDimension"/><attr format="boolean" localization="suggested" name="rippleOverlay"/><attr format="float" localization="suggested" name="rippleAlpha"/><attr format="integer" localization="suggested" name="rippleDuration"/><attr format="integer" localization="suggested" name="rippleFadeDuration"/><attr format="boolean" localization="suggested" name="rippleHover"/><attr format="color" localization="suggested" name="rippleBackground"/><attr format="boolean" localization="suggested" name="rippleDelayClick"/><attr format="boolean" localization="suggested" name="ripplePersistent"/><attr format="boolean" localization="suggested" name="rippleInAdapter"/></declare-styleable>
+</resources>
