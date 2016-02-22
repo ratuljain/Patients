@@ -4,9 +4,11 @@ package com.example.lol.patients.adapter;
  * Created by lol on 14/02/16.
  */
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,8 +32,13 @@ import java.util.List;
 
 public class PrescriptionRecyclerAdapter extends RecyclerView.Adapter<PrescriptionRecyclerAdapter.ContactViewHolder> {
 
+    public static ProgressDialog dialog;
     private List<PrescriptionPatient> contactList;
 //    static CreateDoctor c;
+
+    public PrescriptionRecyclerAdapter() {
+        contactList = null;
+    }
 
     public PrescriptionRecyclerAdapter(List<PrescriptionPatient> contactList) {
         this.contactList = contactList;
@@ -72,6 +79,7 @@ public class PrescriptionRecyclerAdapter extends RecyclerView.Adapter<Prescripti
 
         HashMap<String, Object> orderMAP;
         JSONObject amap;
+
         protected HashMap<String, Integer> list;
         protected TextView vDate;
         protected TextView vDocName;
@@ -103,16 +111,19 @@ public class PrescriptionRecyclerAdapter extends RecyclerView.Adapter<Prescripti
 //                }
 //            });
 
-            vDate =  (TextView) v.findViewById(R.id.date);
-            vDocName = (TextView)  v.findViewById(R.id.docnameCard);
-            vDiagnosis = (TextView)  v.findViewById(R.id.diagnosis);
+            vDate = (TextView) v.findViewById(R.id.date);
+            vDocName = (TextView) v.findViewById(R.id.docnameCard);
+            vDiagnosis = (TextView) v.findViewById(R.id.diagnosis);
             vMapJson = (TextView) v.findViewById(R.id.medListJson);
+
+            dialog = new ProgressDialog(v.getContext());
+            dialog.setMessage("Please Wait..");
         }
 
         @Override
-        public void onClick(View view) {
+        public void onClick(final View view) {
 
-            if (view.getId() == vMedicinesButton.getId()){
+            if (view.getId() == vMedicinesButton.getId()) {
 
                 Intent myIntent = new Intent(view.getContext(), PatientDetails.class);
                 String name = vMapJson.getText().toString();
@@ -121,41 +132,87 @@ public class PrescriptionRecyclerAdapter extends RecyclerView.Adapter<Prescripti
                 view.getContext().startActivity(myIntent);
 
             } else {
-                String name = vMapJson.getText().toString();
-                Log.v("MyGcmListenerService", name);
 
-                try{
-                    list = JSON.chemistMedicineListHashMap(name.toString());
-                    amap = new JSONObject(list);
-                    Log.v("MyGcmListenerService", amap.toString());
-                }catch (JSONException e){
-                    Log.v("MyGcmListenerService", e.getMessage());
-                }
+                new AlertDialog.Builder(view.getContext())
+                        .setIcon(R.mipmap.ic_report)
+                        .setTitle("Order Confirmation")
+                        .setMessage("Do you want to place your order?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                orderMAP = new HashMap<>();
+                                String name = vMapJson.getText().toString();
+                                Log.v("MyGcmListenerService", name);
 
-                orderMAP.put("patient_id", 3);
-                orderMAP.put("chemist_id", 1);
-                orderMAP.put("order", amap);
+                                try {
+                                    list = JSON.chemistMedicineListHashMap(name.toString());
+                                    amap = new JSONObject(list);
+                                    Log.v("MyGcmListenerService", amap.toString());
+                                } catch (JSONException e) {
+                                    Log.v("MyGcmListenerService", e.getMessage());
+                                }
 
-                JSONObject orderJSON = null;
+                                orderMAP = new HashMap<>();
 
-                try{
-                    orderJSON = new JSONObject(orderMAP);
-                }catch (Exception e){
-                    Log.v("MyGcmListenerService", e.getMessage());
-                }
+                                orderMAP.put("patient_id", 3);
+                                orderMAP.put("chemist_id", 1);
+                                orderMAP.put("order", amap);
 
+                                JSONObject orderJSON = null;
 
-                Log.v("MyGcmListenerService", orderJSON.toString());
+                                try {
+                                    orderJSON = new JSONObject(orderMAP);
+                                } catch (Exception e) {
+                                    Log.v("MyGcmListenerService", e.getMessage());
+                                }
 
-                Toast.makeText(view.getContext(), orderJSON.toString(), Toast.LENGTH_SHORT).show();
+                                Log.v("MyGcmListenerService", orderJSON.toString());
 
+                                Toast.makeText(view.getContext(), orderJSON.toString(), Toast.LENGTH_SHORT).show();
 
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                                PrescriptionRecyclerAdapter outerclass = new PrescriptionRecyclerAdapter();
+                                CreateDoctor c = outerclass.new CreateDoctor();
 
-                StrictMode.setThreadPolicy(policy);
-                HttpPost.SendHttpPost("http://104.131.46.2:5000/Prescription/api/v1.0/orders", orderJSON);
+                                c.execute(orderJSON);
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+//                String name = vMapJson.getText().toString();
+//                Log.v("MyGcmListenerService", name);
+//
+//                try{
+//                    list = JSON.chemistMedicineListHashMap(name.toString());
+//                    amap = new JSONObject(list);
+//                    Log.v("MyGcmListenerService", amap.toString());
+//                }catch (JSONException e){
+//                    Log.v("MyGcmListenerService", e.getMessage());
+//                }
+//
+//                orderMAP = new HashMap<>();
+//
+//                orderMAP.put("patient_id", 3);
+//                orderMAP.put("chemist_id", 1);
+//                orderMAP.put("order", amap);
+//
+//                JSONObject orderJSON = null;
+//
+//                try{
+//                    orderJSON = new JSONObject(orderMAP);
+//                }catch (Exception e){
+//                    Log.v("MyGcmListenerService", e.getMessage());
+//                }
+//
+//
+//                Log.v("MyGcmListenerService", orderJSON.toString());
+//
+//                Toast.makeText(view.getContext(), orderJSON.toString(), Toast.LENGTH_SHORT).show();
+//
+//                PrescriptionRecyclerAdapter outerclass = new PrescriptionRecyclerAdapter();
+//                CreateDoctor c = outerclass.new CreateDoctor();
+//
+////                ProgressDialog dialog = new ProgressDialog(view.getContext());
+////                dialog.setMessage("Please Wait..");
 //                c.execute(orderJSON);
 
             }
@@ -170,6 +227,15 @@ public class PrescriptionRecyclerAdapter extends RecyclerView.Adapter<Prescripti
     public class CreateDoctor extends AsyncTask<JSONObject, Void, Void> {
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setIndeterminate(false);
+            dialog.setCancelable(true);
+            dialog.show();
+        }
+
+
+        @Override
         protected Void doInBackground(JSONObject... params) {
 
             JSONObject jsonObjRecv = null;
@@ -177,15 +243,19 @@ public class PrescriptionRecyclerAdapter extends RecyclerView.Adapter<Prescripti
             Log.d("jsonObjSend : ", jsonObjectSend.toString());
             jsonObjRecv = HttpPost.SendHttpPost("http://104.131.46.2:5000/Prescription/api/v1.0/orders", jsonObjectSend);
 
-            if(jsonObjRecv != null) {
+            if (jsonObjRecv != null) {
                 Log.d("Received Json : ", jsonObjRecv.toString());
-            }else{
+            } else {
                 Log.d("Received Json : ", "failed");
             }
 
             return null;
         }
 
+        @Override
+        protected void onPostExecute(Void v) {
+            dialog.dismiss();
+        }
 
     }
 }

@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     String receivedJSONString;
     ArrayList<HashMap<String, Object>> mapForList;
+
     EditText PatientName;
     private final String LOG_TAG = MainActivity.class.getSimpleName();
 

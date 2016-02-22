@@ -1,5 +1,6 @@
 package com.example.lol.patients;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -30,12 +31,13 @@ public class PrescriptionCards extends AppCompatActivity {
     private final String LOG_TAG = PrescriptionCards.class.getSimpleName();
     String receivedJSONString;
     ArrayList<HashMap<String, Object>> mapForList;
+    ArrayList<PrescriptionPatient> arrayOfPrescriptions;
     Toast mtoast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        ArrayList<PrescriptionPatient> arrayOfPrescriptions = new ArrayList<>();  // stores objects of prescription class
+//        ArrayList<PrescriptionPatient> arrayOfPrescriptions = new ArrayList<>();  // stores objects of prescription class
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prescription_cards);
@@ -45,47 +47,24 @@ public class PrescriptionCards extends AppCompatActivity {
         final String s = getIntent().getStringExtra("JSON");
 
         CallAPI c = new CallAPI();
-        try {
-            receivedJSONString = c.execute(s).get();
-            mapForList = JSON.getHashMapforPrescriptionList(receivedJSONString);
-        } catch (Exception ei) {
-            ei.printStackTrace();
-        }
-
-        for (HashMap<String, Object> maps : mapForList) {
-            String id = (String) maps.get("presID");
-            String docName = (String) maps.get("DocName");
-            Date date = (Date) maps.get("presDate");
-            String mapJson = (String) maps.get("jsonFile");
-            String Diagnosis = getResources().getString(R.string.diagnosis);
-
-//            HashMap<String, Integer> medQuantityMap = (HashMapJSON<String, Integer>) maps.get("medQuantity");
-
-            Log.v(LOG_TAG, "Doc name - " + mapJson);
-//            Log.v(LOG_TAG, "Pres date - " + date.toString().substring(0, 10));
-
-            arrayOfPrescriptions.add(new PrescriptionPatient(docName, date, Diagnosis, mapJson));
-        }
-
-        RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
-
-        recList.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recList.setLayoutManager(llm);
-
-        PrescriptionRecyclerAdapter ca = new PrescriptionRecyclerAdapter(arrayOfPrescriptions);
-
-        AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(ca);
-        ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(alphaAdapter);
-
-        recList.setAdapter(scaleAdapter);
+        c.execute(s);
 
     }
 
     private class CallAPI extends AsyncTask<String, String, String> {
 
+        ProgressDialog pDialog = new ProgressDialog(PrescriptionCards.this);
+
 //        private final String LOG_TAG = CallAPI.class.getSimpleName();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog.setMessage("Creating Prescription...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
 
 
         @Override
@@ -156,8 +135,47 @@ public class PrescriptionCards extends AppCompatActivity {
 
         }
 
+        @Override
+        protected void onPostExecute(String v) {
+
+            pDialog.dismiss();
+
+            arrayOfPrescriptions = new ArrayList<>();
+
+            try {
+                receivedJSONString = v;
+                mapForList = JSON.getHashMapforPrescriptionList(receivedJSONString);
+            } catch (Exception ei) {
+                ei.printStackTrace();
+            }
+
+            for (HashMap<String, Object> maps : mapForList) {
+                String id = (String) maps.get("presID");
+                String docName = (String) maps.get("DocName");
+                Date date = (Date) maps.get("presDate");
+                String mapJson = (String) maps.get("jsonFile");
+                String Diagnosis = getResources().getString(R.string.diagnosis);
+
+                Log.v(LOG_TAG, "Doc name - " + mapJson);
+
+                arrayOfPrescriptions.add(new PrescriptionPatient(docName, date, Diagnosis, mapJson));
+            }
+
+            RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+
+            recList.setHasFixedSize(true);
+            LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
+            llm.setOrientation(LinearLayoutManager.VERTICAL);
+            recList.setLayoutManager(llm);
+
+            PrescriptionRecyclerAdapter ca = new PrescriptionRecyclerAdapter(arrayOfPrescriptions);
+
+            AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(ca);
+            ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(alphaAdapter);
+
+            recList.setAdapter(scaleAdapter);
+        }
 
     }
-
 
 }
