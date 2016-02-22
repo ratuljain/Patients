@@ -20,14 +20,14 @@
 
         <!--gcm check activity-->
         <activity
-            android:name=".GCMCheck"
+            android:name=".SplashScreensActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <!--gcm check activity-->
 
@@ -36,11 +36,11 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_prescription_cards"
             android:theme="@style/AppTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.lol.patients.MainActivity" />
@@ -77,26 +77,26 @@
         <!-- [END gcm_receiver] -->
 
         <!-- [START gcm_listener] -->
-        <service
-            android:name=".MyGcmListenerService"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-            </intent-filter>
-        </service>
-        <!-- [END gcm_listener] -->
+        <!--<service-->
+            <!--android:name=".MyGcmListenerService"-->
+            <!--android:exported="false" >-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.google.android.c2dm.intent.RECEIVE" />-->
+            <!--</intent-filter>-->
+        <!--</service>-->
+        <!--&lt;!&ndash; [END gcm_listener] &ndash;&gt;-->
 
-        <!-- [START instanceId_listener] -->
-        <service
-            android:name=".MyInstanceIDListenerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
-            </intent-filter>
-        </service>
-        <!-- [END instanceId_listener] -->
+        <!--&lt;!&ndash; [START instanceId_listener] &ndash;&gt;-->
+        <!--<service-->
+            <!--android:name=".MyInstanceIDListenerService"-->
+            <!--android:exported="false">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.google.android.gms.iid.InstanceID"/>-->
+            <!--</intent-filter>-->
+        <!--</service>-->
+        <!--&lt;!&ndash; [END instanceId_listener] &ndash;&gt;-->
 
-        <service android:name=".RegistrationIntentService" android:exported="false"/>
+        <!--<service android:name=".RegistrationIntentService" android:exported="false"/>-->
 
     </application>
 

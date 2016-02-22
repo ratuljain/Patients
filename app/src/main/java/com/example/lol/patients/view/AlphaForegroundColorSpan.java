@@ -1,4 +1,4 @@
-package com.example.lol.patients.views;
+package com.example.lol.patients.view;
 
 import android.graphics.Color;
 import android.os.Parcel;
