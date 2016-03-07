@@ -1,5 +1,7 @@
 package com.example.lol.patients;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +16,7 @@ import java.net.URL;
 
 public class HttpPost {
 
+    private static final String LOG_TAG = HttpPost.class.getSimpleName();
 
     public static JSONObject SendHttpPost(String url_rec, JSONObject jsonObjSend) {
 
@@ -45,28 +48,29 @@ public class HttpPost {
                 sb.append(output + "\n");
             }
 
-
             output = sb.toString();
             jsonObjRecv = new JSONObject(output);
 
+            Log.v(LOG_TAG, jsonObjRecv.toString());
 
             conn.disconnect();
 
         } catch (MalformedURLException e) {
 
             e.printStackTrace();
+            Log.v(LOG_TAG, e.getMessage());
 
         } catch (IOException e) {
 
             e.printStackTrace();
+            Log.v(LOG_TAG, e.getMessage());
 
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.v(LOG_TAG, e.getMessage());
         }
 
         return jsonObjRecv;
 
     }
-
-
 }

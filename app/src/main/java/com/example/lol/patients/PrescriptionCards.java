@@ -1,12 +1,14 @@
 package com.example.lol.patients;
 
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -33,6 +35,7 @@ public class PrescriptionCards extends AppCompatActivity {
     ArrayList<HashMap<String, Object>> mapForList;
     ArrayList<PrescriptionPatient> arrayOfPrescriptions;
     Toast mtoast;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +44,16 @@ public class PrescriptionCards extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prescription_cards);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         final String s = getIntent().getStringExtra("JSON");
 
+//        coordinatorLayout=(CoordinatorLayout)findViewById(R.id.main_contentPreList);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String name = preferences.getString("patient_id", "");
+
         CallAPI c = new CallAPI();
-        c.execute(s);
+        c.execute(name);
 
     }
 
@@ -145,37 +151,39 @@ public class PrescriptionCards extends AppCompatActivity {
             try {
                 receivedJSONString = v;
                 mapForList = JSON.getHashMapforPrescriptionList(receivedJSONString);
+
+                for (HashMap<String, Object> maps : mapForList) {
+                    String id = (String) maps.get("presID");
+                    String docName = (String) maps.get("DocName");
+                    Date date = (Date) maps.get("presDate");
+                    String mapJson = (String) maps.get("jsonFile");
+                    String Diagnosis = getResources().getString(R.string.diagnosis);
+
+                    Log.v(LOG_TAG, "Doc name - " + mapJson);
+
+                    arrayOfPrescriptions.add(new PrescriptionPatient(docName, date, Diagnosis, mapJson));
+                }
+
+                RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
+
+                recList.setHasFixedSize(true);
+                LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
+                llm.setOrientation(LinearLayoutManager.VERTICAL);
+                recList.setLayoutManager(llm);
+
+                PrescriptionRecyclerAdapter ca = new PrescriptionRecyclerAdapter(arrayOfPrescriptions);
+
+                AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(ca);
+                ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(alphaAdapter);
+
+                recList.setAdapter(scaleAdapter);
+
             } catch (Exception ei) {
+                Toast.makeText(getApplicationContext(), "Unable to connect to the server",
+                        Toast.LENGTH_LONG).show();
                 ei.printStackTrace();
+
             }
-
-            for (HashMap<String, Object> maps : mapForList) {
-                String id = (String) maps.get("presID");
-                String docName = (String) maps.get("DocName");
-                Date date = (Date) maps.get("presDate");
-                String mapJson = (String) maps.get("jsonFile");
-                String Diagnosis = getResources().getString(R.string.diagnosis);
-
-                Log.v(LOG_TAG, "Doc name - " + mapJson);
-
-                arrayOfPrescriptions.add(new PrescriptionPatient(docName, date, Diagnosis, mapJson));
-            }
-
-            RecyclerView recList = (RecyclerView) findViewById(R.id.cardList);
-
-            recList.setHasFixedSize(true);
-            LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
-            llm.setOrientation(LinearLayoutManager.VERTICAL);
-            recList.setLayoutManager(llm);
-
-            PrescriptionRecyclerAdapter ca = new PrescriptionRecyclerAdapter(arrayOfPrescriptions);
-
-            AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(ca);
-            ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(alphaAdapter);
-
-            recList.setAdapter(scaleAdapter);
         }
-
     }
-
 }

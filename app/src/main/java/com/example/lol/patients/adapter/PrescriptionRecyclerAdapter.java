@@ -8,7 +8,9 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -136,7 +138,7 @@ public class PrescriptionRecyclerAdapter extends RecyclerView.Adapter<Prescripti
                 new AlertDialog.Builder(view.getContext())
                         .setIcon(R.mipmap.ic_report)
                         .setTitle("Order Confirmation")
-                        .setMessage("Do you want to place your order?")
+                        .setMessage("Do you want to place the order?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -154,9 +156,14 @@ public class PrescriptionRecyclerAdapter extends RecyclerView.Adapter<Prescripti
 
                                 orderMAP = new HashMap<>();
 
-                                orderMAP.put("patient_id", 3);
+                                orderMAP.put("patient_id", 1);
                                 orderMAP.put("chemist_id", 1);
                                 orderMAP.put("order", amap);
+                                orderMAP.put("json", name);
+
+                                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(view.getContext());
+                                String patientID = preferences.getString("personId", "");
+                                Log.v("MyGcmListenerService", patientID);
 
                                 JSONObject orderJSON = null;
 
@@ -168,7 +175,7 @@ public class PrescriptionRecyclerAdapter extends RecyclerView.Adapter<Prescripti
 
                                 Log.v("MyGcmListenerService", orderJSON.toString());
 
-                                Toast.makeText(view.getContext(), orderJSON.toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(view.getContext(), "Order Placed", Toast.LENGTH_SHORT).show();
 
                                 PrescriptionRecyclerAdapter outerclass = new PrescriptionRecyclerAdapter();
                                 CreateDoctor c = outerclass.new CreateDoctor();
@@ -178,42 +185,6 @@ public class PrescriptionRecyclerAdapter extends RecyclerView.Adapter<Prescripti
                         })
                         .setNegativeButton("No", null)
                         .show();
-//                String name = vMapJson.getText().toString();
-//                Log.v("MyGcmListenerService", name);
-//
-//                try{
-//                    list = JSON.chemistMedicineListHashMap(name.toString());
-//                    amap = new JSONObject(list);
-//                    Log.v("MyGcmListenerService", amap.toString());
-//                }catch (JSONException e){
-//                    Log.v("MyGcmListenerService", e.getMessage());
-//                }
-//
-//                orderMAP = new HashMap<>();
-//
-//                orderMAP.put("patient_id", 3);
-//                orderMAP.put("chemist_id", 1);
-//                orderMAP.put("order", amap);
-//
-//                JSONObject orderJSON = null;
-//
-//                try{
-//                    orderJSON = new JSONObject(orderMAP);
-//                }catch (Exception e){
-//                    Log.v("MyGcmListenerService", e.getMessage());
-//                }
-//
-//
-//                Log.v("MyGcmListenerService", orderJSON.toString());
-//
-//                Toast.makeText(view.getContext(), orderJSON.toString(), Toast.LENGTH_SHORT).show();
-//
-//                PrescriptionRecyclerAdapter outerclass = new PrescriptionRecyclerAdapter();
-//                CreateDoctor c = outerclass.new CreateDoctor();
-//
-////                ProgressDialog dialog = new ProgressDialog(view.getContext());
-////                dialog.setMessage("Please Wait..");
-//                c.execute(orderJSON);
 
             }
         }

@@ -1,55 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.lol.patients">
+    package="com.example.lol.patients" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-    <permission android:name="com.example.lol.patients.permission.C2D_MESSAGE"
+    <permission
+        android:name="com.example.lol.patients.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="com.example.lol.patients.permission.C2D_MESSAGE" />
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/reports"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
 
-        <!--gcm check activity-->
+        <!-- gcm check activity -->
         <activity
             android:name=".SplashScreensActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--gcm check activity-->
-
+        <!-- gcm check activity -->
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_prescription_cards"
-            android:theme="@style/AppTheme">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+            android:theme="@style/AppTheme1" >
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.lol.patients.MainActivity" />
         </activity>
-
         <activity
             android:name=".PrescriptionCards"
             android:label="@string/title_activity_patient_details"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.lol.patients.PrescriptionCards" />
@@ -58,7 +62,7 @@
             android:name=".PatientDetails"
             android:label="@string/title_activity_patient_details"
             android:parentActivityName=".PrescriptionCards"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.lol.patients.PrescriptionCards" />
@@ -71,33 +75,59 @@
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="com.codepath.gcmquickstart" />
             </intent-filter>
         </receiver>
         <!-- [END gcm_receiver] -->
 
+
         <!-- [START gcm_listener] -->
-        <!--<service-->
-            <!--android:name=".MyGcmListenerService"-->
-            <!--android:exported="false" >-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.google.android.c2dm.intent.RECEIVE" />-->
-            <!--</intent-filter>-->
-        <!--</service>-->
-        <!--&lt;!&ndash; [END gcm_listener] &ndash;&gt;-->
+        <!-- <service -->
+        <!-- android:name=".MyGcmListenerService" -->
+        <!-- android:exported="false" > -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.android.c2dm.intent.RECEIVE" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
+        <!-- &lt;!&ndash; [END gcm_listener] &ndash;&gt; -->
 
-        <!--&lt;!&ndash; [START instanceId_listener] &ndash;&gt;-->
-        <!--<service-->
-            <!--android:name=".MyInstanceIDListenerService"-->
-            <!--android:exported="false">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.google.android.gms.iid.InstanceID"/>-->
-            <!--</intent-filter>-->
-        <!--</service>-->
-        <!--&lt;!&ndash; [END instanceId_listener] &ndash;&gt;-->
 
-        <!--<service android:name=".RegistrationIntentService" android:exported="false"/>-->
+        <!-- &lt;!&ndash; [START instanceId_listener] &ndash;&gt; -->
+        <!-- <service -->
+        <!-- android:name=".MyInstanceIDListenerService" -->
+        <!-- android:exported="false"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.android.gms.iid.InstanceID"/> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
+        <!-- &lt;!&ndash; [END instanceId_listener] &ndash;&gt; -->
 
+
+        <!-- <service android:name=".RegistrationIntentService" android:exported="false"/> -->
+
+        <activity
+            android:name=".SignInActivity"
+            android:label="@string/title_activity_sign_in" />
+        <activity
+            android:name=".wizard.WizardTravelActivity"
+            android:label="@string/title_activity_wizard_travel"
+            android:noHistory="true"
+            android:theme="@style/AppTheme1" />
+        <activity
+            android:name=".Profile"
+            android:label="@string/title_activity_profile"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme1" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.lol.patients.MainActivity" />
+        </activity>
+        <activity
+            android:name=".Test"
+            android:label="@string/title_activity_test"
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

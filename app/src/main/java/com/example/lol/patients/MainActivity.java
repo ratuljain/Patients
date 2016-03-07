@@ -1,14 +1,27 @@
 package com.example.lol.patients;
 
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
+import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     String receivedJSONString;
     ArrayList<HashMap<String, Object>> mapForList;
-
+    private AccountHeader headerResult = null;
     EditText PatientName;
     private final String LOG_TAG = MainActivity.class.getSimpleName();
 
@@ -27,27 +40,105 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarmain);
+        setSupportActionBar(toolbar);
 
-        PatientName = (EditText) findViewById(R.id.patientName);
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(PatientName, InputMethodManager.SHOW_IMPLICIT);
+        toolbar.setNavigationIcon(R.drawable.ic_action_menu);
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_main);
+        collapsingToolbarLayout.setTitle("K");
+        collapsingToolbarLayout.setTitleEnabled(false);
+
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String email = preferences.getString("email", "");
+        String first_name = preferences.getString("first_name", "");
+        String last_name = preferences.getString("last_name", "");
+
+        final IProfile profile = new ProfileDrawerItem().withName("Hi, " + first_name).withEmail(email)
+                .withIcon("https://avatars3.githubusercontent.com/u/1476232?v=3&s=460").withIdentifier(100);
+
+        headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .addProfiles(profile)
+                .withTranslucentStatusBar(true)
+                .withHeaderBackground(R.drawable.headerorange)
+                .withSavedInstance(savedInstanceState)
+                .build();
+
+
+        SecondaryDrawerItem item1 = new SecondaryDrawerItem().withName("Profile").withIcon(MaterialDesignIconic.Icon.gmi_account).withIdentifier(1);
+        SecondaryDrawerItem item2 = new SecondaryDrawerItem().withName("Your Prescriptions").withIcon(FontAwesome.Icon.faw_heart).withIdentifier(2);
+        SecondaryDrawerItem item3 = new SecondaryDrawerItem().withName("Your Orders").withIcon(FontAwesome.Icon.faw_opencart).withIdentifier(3);
+
+        //create the drawer and remember the `Drawer` result object
+        Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .withActionBarDrawerToggleAnimated(true)
+                .withTranslucentNavigationBar(true)
+                .withShowDrawerOnFirstLaunch(true)
+                .withActionBarDrawerToggleAnimated(true)
+                .withAccountHeader(headerResult)
+                .addDrawerItems(
+                        item1,
+                        item2,
+                        item3
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        // do something with the clicked item :D
+
+
+                        if (drawerItem.getIdentifier() == 1) {
+                            Intent myIntent = new Intent(getApplicationContext(), Profile.class);
+                            startActivity(myIntent);
+                        } else if (drawerItem.getIdentifier() == 2) {
+                            Intent myIntent = new Intent(getApplicationContext(), PrescriptionCards.class);
+                            startActivity(myIntent);
+                        } else if(drawerItem.getIdentifier() == 3){
+//                            Toast.makeText(getApplicationContext(), "your orders :P", Toast.LENGTH_LONG).show();
+                            Intent myIntent = new Intent(getApplicationContext(), SignInActivity.class);
+                            startActivity(myIntent);
+                        }
+
+                        return true;
+                    }
+                })
+                .build();
+
 
         Button prescriptionView = (Button) findViewById(R.id.submit);
 
         prescriptionView.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
 
+                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                String name = preferences.getString("patient_id", "");
+                Log.v(LOG_TAG, name );
+
                 Intent myIntent = new Intent(getApplicationContext(), PrescriptionCards.class);
-                String name = PatientName.getText().toString();
+
                 myIntent.putExtra("JSON", name); //Optional parameters
                 Log.v("MainMethod", name);
                 startActivity(myIntent);
+
 
             }
         });
 
     }
 
+    public void onBackPressed() {
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
+
+    }
 
 //    private class CallAPI extends AsyncTask<String, String, String> {
 //
@@ -130,6 +221,5 @@ public class MainActivity extends AppCompatActivity {
 //
 //
 //    }
-
 
 }

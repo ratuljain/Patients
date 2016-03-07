@@ -12,5 +12,9 @@
     <dimen name="drawer_width_news">96dp</dimen>
     <dimen name="ken_burns_header">250dp</dimen>
     <dimen name="cpb_stroke_width">4dp</dimen>
+
+
+    <dimen name="g_top_margin">100dp</dimen>
+    <dimen name="button_width">100dp</dimen>
 </resources>
 
