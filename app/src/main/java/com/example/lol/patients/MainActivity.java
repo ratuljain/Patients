@@ -11,7 +11,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.lol.patients.activity.MainAlarmActivity;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.material_design_iconic_typeface_library.MaterialDesignIconic;
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -26,14 +34,17 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements
+        GoogleApiClient.OnConnectionFailedListener,
+        View.OnClickListener {
 
     String receivedJSONString;
     ArrayList<HashMap<String, Object>> mapForList;
     private AccountHeader headerResult = null;
     EditText PatientName;
+    public GoogleApiClient mGoogleApiClient;
     private final String LOG_TAG = MainActivity.class.getSimpleName();
+    public SharedPreferences userData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +58,24 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-
         CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_main);
         collapsingToolbarLayout.setTitle("K");
         collapsingToolbarLayout.setTitleEnabled(false);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestProfile()
+                .requestIdToken("123945801611-k2sqmjukigvua9t2nhsb6a0lfluqneth.apps.googleusercontent.com")
+                .build();
+        // [END configure_signin]
+
+        // [START build_client]
+        // Build a GoogleApiClient with access to the Google Sign-In API and the
+        // options specified by gso.
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -72,7 +97,9 @@ public class MainActivity extends AppCompatActivity {
 
         SecondaryDrawerItem item1 = new SecondaryDrawerItem().withName("Profile").withIcon(MaterialDesignIconic.Icon.gmi_account).withIdentifier(1);
         SecondaryDrawerItem item2 = new SecondaryDrawerItem().withName("Your Prescriptions").withIcon(FontAwesome.Icon.faw_heart).withIdentifier(2);
-        SecondaryDrawerItem item3 = new SecondaryDrawerItem().withName("Your Orders").withIcon(FontAwesome.Icon.faw_opencart).withIdentifier(3);
+        SecondaryDrawerItem item3 = new SecondaryDrawerItem().withName("Reminders").withIcon(FontAwesome.Icon.faw_opencart).withIdentifier(3);
+        SecondaryDrawerItem item4 = new SecondaryDrawerItem().withName("Transition").withIcon(FontAwesome.Icon.faw_paint_brush).withIdentifier(4);
+        SecondaryDrawerItem item5 = new SecondaryDrawerItem().withName("Log Out").withIcon(FontAwesome.Icon.faw_power_off).withIdentifier(5);
 
         //create the drawer and remember the `Drawer` result object
         Drawer result = new DrawerBuilder()
@@ -85,7 +112,9 @@ public class MainActivity extends AppCompatActivity {
                 .addDrawerItems(
                         item1,
                         item2,
-                        item3
+                        item3,
+                        item4,
+                        item5
                 )
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
@@ -100,9 +129,16 @@ public class MainActivity extends AppCompatActivity {
                             Intent myIntent = new Intent(getApplicationContext(), PrescriptionCards.class);
                             startActivity(myIntent);
                         } else if(drawerItem.getIdentifier() == 3){
-//                            Toast.makeText(getApplicationContext(), "your orders :P", Toast.LENGTH_LONG).show();
-                            Intent myIntent = new Intent(getApplicationContext(), SignInActivity.class);
+                            Intent myIntent = new Intent(getApplicationContext(), MainAlarmActivity.class);
                             startActivity(myIntent);
+                        } else if(drawerItem.getIdentifier() == 4){
+                            Intent myIntent = new Intent(getApplicationContext(), RevealAnimation.class);
+                            startActivity(myIntent);
+                        } else if(drawerItem.getIdentifier() == 5){
+//                            Toast.makeText(getApplicationContext(), "your orders :P", Toast.LENGTH_LONG).show();
+//                            Intent myIntent = new Intent(getApplicationContext(), MainAlarmActivity.class);
+//                            startActivity(myIntent);
+                            signOut();
                         }
 
                         return true;
@@ -137,7 +173,41 @@ public class MainActivity extends AppCompatActivity {
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startMain);
+    }
 
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
+        // be available.
+        Log.d(LOG_TAG, "onConnectionFailed:" + connectionResult);
+    }
+
+    // [START signOut]
+    public void signOut() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        // [START_EXCLUDE]
+                        // [END_EXCLUDE]
+                        Toast.makeText(getApplicationContext(), "Logged out", Toast.LENGTH_LONG).show();
+                        userData = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        userData.edit().clear().apply();
+
+                        Intent i = new Intent(getApplicationContext(), SignInActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                        // Add new Flag to start new Activity
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
+                        finish();
+                    }
+                });
     }
 
 //    private class CallAPI extends AsyncTask<String, String, String> {

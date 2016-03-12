@@ -13,4 +13,10 @@
     tools:showIn="@layout/activity_test"
     tools:context="com.example.lol.patients.Test">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Unable to reach The servers"
+        />
 </RelativeLayout>

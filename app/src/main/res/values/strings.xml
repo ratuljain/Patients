@@ -266,4 +266,28 @@
     <string name="no_prescription_available">You don\'t have any prescriptions</string>
     <string name="title_activity_test">Test</string>
 
+    <string name="nav_item_reminders">Reminders</string>
+    <string name="nav_item_prescriptions">Prescriptions</string>
+
+
+    <!-- navigation drawer item labels  -->
+    <string-array name="nav_drawer_labels">
+        <item>@string/nav_item_reminders</item>
+        <item>@string/nav_item_prescriptions</item>
+    </string-array>
+
+    <string name="title_reminders">Reminders</string>
+    <string name="title_prescriptions">Prescriptions</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="title_activity_card_animation">CardAnimation</string>
+
+    <string name="image">image</string>
+    <string name="desc">Being the savage\'s bowsman, that is, the person who pulled the
+    bow-oar in his boat. Dolor sit amet.</string>
+
+    <string name="italic">Friday 12 FEB.</string>
+    <string name="duplicate">DUPLICATE</string>
+    <string name="schedule">SCHEDULE</string>
+    <string name="delete">DELETE</string>
+
 </resources>

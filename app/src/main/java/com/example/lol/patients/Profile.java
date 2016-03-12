@@ -22,6 +22,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -34,12 +36,31 @@ public class Profile extends AppCompatActivity {
     private TextInputLayout inputLayoutName, inputLayoutEmail, inputLayoutPassword;
     private Button btnSignUp;
     private CoordinatorLayout coordinatorLayout;
+    private GoogleApiClient mGoogleApiClient;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_profile);
+
+
+//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestEmail()
+//                .requestProfile()
+//                .requestIdToken("123945801611-k2sqmjukigvua9t2nhsb6a0lfluqneth.apps.googleusercontent.com")
+//                .build();
+        // [END configure_signin]
+
+        // [START build_client]
+        // Build a GoogleApiClient with access to the Google Sign-In API and the
+        // options specified by gso.
+//        mGoogleApiClient.
+
+
+
 
 //        toolbar = (Toolbar) findViewById(R.id.collapsing_toolbar_main);
 //        setSupportActionBar(toolbar);

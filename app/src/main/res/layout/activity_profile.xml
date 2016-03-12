@@ -53,6 +53,7 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -68,30 +69,80 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Please complete your profile"
-                android:layout_margin="40dp"
+                android:layout_margin="20dp"
                 android:textColor="@color/cpb_red_dark"
                 android:id="@+id/textView"
                 android:layout_gravity="center_horizontal"
                 app:typeface="robotoMedium"/>
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_name"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:padding="@dimen/activity_horizontal_margin">
 
-                <EditText
-                    android:id="@+id/input_name"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:id="@+id/ivContactItem1"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text="9703331721"
-                    android:hint="@string/edt_tel" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:src="@drawable/ic_phone_black_24dp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_name"
+                    android:layout_width="match_parent"
+                    android:layout_toEndOf="@id/ivContactItem1"
+                    android:layout_toRightOf="@id/ivContactItem1"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:layout_toLeftOf="@+id/chkState3"
+                    android:layout_toStartOf="@+id/chkState3"
+                    android:ellipsize="end"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/input_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="9703331721"
+                        android:hint="@string/edt_tel" />
+                </android.support.design.widget.TextInputLayout>
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <ImageView
+                    android:id="@+id/ivContactItem3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:src="@drawable/ic_email_black_24dp" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_email"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_toEndOf="@id/ivContactItem3"
+                android:layout_toLeftOf="@+id/chkState3"
+                android:layout_toRightOf="@id/ivContactItem3"
+                android:layout_toStartOf="@+id/chkState3"
+                android:ellipsize="end">
 
                 <EditText
                     android:id="@+id/input_email"
@@ -102,10 +153,35 @@
                     android:hint="@string/edt_ip" />
             </android.support.design.widget.TextInputLayout>
 
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:padding="@dimen/activity_horizontal_margin">
+
+                <ImageView
+                    android:id="@+id/ivContactItem5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"
+                    android:src="@drawable/ic_location_on_black_24dp" />
+
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_password"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_toEndOf="@id/ivContactItem5"
+                android:layout_toLeftOf="@+id/chkState5"
+                android:layout_toRightOf="@id/ivContactItem5"
+                android:layout_toStartOf="@+id/chkState5"
+                android:ellipsize="end">
 
                 <EditText
                     android:id="@+id/input_password"
@@ -115,13 +191,20 @@
                     android:hint="@string/blood_group" />
             </android.support.design.widget.TextInputLayout>
 
+            </RelativeLayout>
+
             <Button android:id="@+id/btn_signup"
-                android:layout_width="fill_parent"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_sign_up"
+                android:text="@string/common_google_play_services_update_button"
+                android:layout_gravity="center_horizontal"
                 android:background="@color/colorPrimary"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_below="@id/input_password"
                 android:textColor="@android:color/white"/>
+
 
         </LinearLayout>
 
