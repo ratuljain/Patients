@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements
 
         SecondaryDrawerItem item1 = new SecondaryDrawerItem().withName("Profile").withIcon(MaterialDesignIconic.Icon.gmi_account).withIdentifier(1);
         SecondaryDrawerItem item2 = new SecondaryDrawerItem().withName("Your Prescriptions").withIcon(FontAwesome.Icon.faw_heart).withIdentifier(2);
-        SecondaryDrawerItem item3 = new SecondaryDrawerItem().withName("Reminders").withIcon(FontAwesome.Icon.faw_opencart).withIdentifier(3);
+        SecondaryDrawerItem item3 = new SecondaryDrawerItem().withName("Reminders").withIcon(FontAwesome.Icon.faw_clock_o).withIdentifier(3);
         SecondaryDrawerItem item4 = new SecondaryDrawerItem().withName("Transition").withIcon(FontAwesome.Icon.faw_paint_brush).withIdentifier(4);
         SecondaryDrawerItem item5 = new SecondaryDrawerItem().withName("Log Out").withIcon(FontAwesome.Icon.faw_power_off).withIdentifier(5);
 
